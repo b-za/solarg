@@ -1,6 +1,6 @@
 # Solarg
 
-Control smartlife wifi geyser switch based on the battery percentage of the FoxESS-Cloud inverter.
+Control smartlife wifi geyser switch via Tuya based on the battery percentage of the FoxESS-Cloud inverter.
 
 ## FoxESS-Cloud Get Inverter Battery Charge Percentage
 
@@ -28,7 +28,9 @@ To run the program, run the following command
 go run .
 ```
 
-## Tuya Smartlife Wifi Geyser Switch
+## Tuya Smartlife Wifi Geyser Switch Control via Tuya
+
+./cmd/test_tuya/
 
 Create a file named secrets.go with the following content
 
