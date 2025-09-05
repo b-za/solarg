@@ -1,0 +1,36 @@
+
+/cmd/*/secrets.go
+/internal/*/secrets.go
+
+token.json
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with "go test -c"
+*.test
+
+# Go workspace file
+go.work
+tmp/
+
+# IDE specific files
+.vscode
+.idea
+
+# Credentials
+creds
+# .env file
+.env
+.envrc
+
+# Project build
+bin
+*templ.go
+
+# OS X generated file
+.DS_Store
