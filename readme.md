@@ -28,7 +28,41 @@ To run the program, run the following command
 go run .
 ```
 
-### Sources
+## Tuya Smartlife Wifi Geyser Switch
+
+Get the access token
+
+```bash
+go run . --get-token
+```
+
+See the current status of the wifi switch
+
+```bash
+go run . --status
+go run .
+```
+
+Toggle the wifi switch
+
+```bash
+go run . --switch=on
+go run . --switch=off
+```
+
+Get the spec for the wifi switch
+
+```bash
+go run . --spec
+```
+
+Get the full status of the wifi switch not just the current on/off status
+
+```bash
+go run . --status-all
+```
+
+## Sources
 
 https://www.foxesscloud.com/
 
