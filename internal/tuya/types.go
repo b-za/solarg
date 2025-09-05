@@ -30,6 +30,11 @@ type DeviceStatusResponse struct {
 	Msg     string         `json:"msg"`
 }
 
+type SwitchStatusResponse struct {
+	Success bool `json:"success"`
+	Status  bool `json:"status"`
+}
+
 type DeviceSpecificationResponse struct {
 	Result  DeviceSpecification `json:"result"`
 	Success bool                `json:"success"`
