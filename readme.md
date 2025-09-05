@@ -30,6 +30,17 @@ go run .
 
 ## Tuya Smartlife Wifi Geyser Switch
 
+Create a file named secrets.go with the following content
+
+```go
+package main
+
+const TuyaClientId = "YOUR_CLIENT_ID"
+const TuyaClientSecret = "YOUR_CLIENT_SECRET"
+const TuyaDeviceID = "YOUR_DEVICE_ID"
+
+```
+
 Get the access token
 
 ```bash
