@@ -93,12 +93,15 @@ func main() {
 	default:
 		// Default action: get status
 		fmt.Printf("\n--- Getting status for device %s ---\n", TuyaDeviceID)
-		status, err := tuya.GetDeviceStatus(TuyaDeviceID, TuyaClientId, TuyaClientSecret)
+		status, err := tuya.GetSwitchStatus(TuyaDeviceID, TuyaClientId, TuyaClientSecret)
 		if err != nil {
 			log.Fatalf("Failed to get device status: %v", err)
 		}
+		statusJSON, err := json.MarshalIndent(status, "", "  ")
+		if err != nil {
+			log.Fatalf("Failed to format status JSON: %v", err)
+		}
 		fmt.Println("Device Status:")
-		fmt.Println(status.Result[0].Code)
-		fmt.Println(status.Result[0].Value)
+		fmt.Println(string(statusJSON))
 	}
 }
