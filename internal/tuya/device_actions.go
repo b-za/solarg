@@ -35,9 +35,10 @@ func getToken(ClientID, ClientSecret string) string {
 		if err != nil {
 			log.Fatalf("Failed to read newly saved token: %v", err)
 		}
-	} else {
-		fmt.Println("Successfully read existing token from file.")
 	}
+
+	fmt.Println("Token successfully retrieved.")
+	fmt.Println(token.ExpireTime)
 
 	if token.AccessToken == "" {
 		log.Fatal("Token is invalid or empty.")
@@ -47,7 +48,12 @@ func getToken(ClientID, ClientSecret string) string {
 
 func GetDeviceStatus(deviceID, clientID, clientSecret string) (DeviceStatusResponse, error) {
 
-	accessToken := getToken(clientID, clientSecret)
+	tokenResponse, err := ReadValidToken(clientID, clientSecret)
+	if err != nil {
+		return DeviceStatusResponse{}, err
+	}
+
+	accessToken := tokenResponse.AccessToken
 
 	var statusResponse DeviceStatusResponse
 	method := "GET"
@@ -94,7 +100,12 @@ func GetDeviceStatus(deviceID, clientID, clientSecret string) (DeviceStatusRespo
 
 func GetSwitchStatus(deviceID, clientID, clientSecret string) (SwitchStatusResponse, error) {
 
-	accessToken := getToken(clientID, clientSecret)
+	tokenResponse, err := ReadValidToken(clientID, clientSecret)
+	if err != nil {
+		return SwitchStatusResponse{}, err
+	}
+
+	accessToken := tokenResponse.AccessToken
 
 	var statusResponse DeviceStatusResponse
 
@@ -157,7 +168,12 @@ func GetSwitchStatus(deviceID, clientID, clientSecret string) (SwitchStatusRespo
 
 func SetSwitchState(deviceID, clientID, clientSecret string, turnOn bool) (string, error) {
 
-	accessToken := getToken(clientID, clientSecret)
+	tokenResponse, err := ReadValidToken(clientID, clientSecret)
+	if err != nil {
+		return "", err
+	}
+
+	accessToken := tokenResponse.AccessToken
 
 	const switchCode = "switch"
 
@@ -214,7 +230,12 @@ func SetSwitchState(deviceID, clientID, clientSecret string, turnOn bool) (strin
 
 func GetDeviceSpecification(deviceID, clientID, clientSecret string) (DeviceSpecificationResponse, error) {
 
-	accessToken := getToken(clientID, clientSecret)
+	tokenResponse, err := ReadValidToken(clientID, clientSecret)
+	if err != nil {
+		return DeviceSpecificationResponse{}, err
+	}
+
+	accessToken := tokenResponse.AccessToken
 
 	var specResponse DeviceSpecificationResponse
 	method := "GET"
