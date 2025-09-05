@@ -11,7 +11,7 @@ This is a simple program to get the battery charge percentage from a FoxESS-Clou
 In order to get access to the data you need and private token to use as API key from the API management section after logging into FoxESS-Cloud
 https://www.foxesscloud.com/user/center
 
-Create a files named secrets.go with the following content
+Create a file named secrets.go with the following content
 
 ```go
 
