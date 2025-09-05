@@ -14,6 +14,7 @@ type TokenResult struct {
 	ExpireTime   int    `json:"expire_time"`
 	RefreshToken string `json:"refresh_token"`
 	UID          string `json:"uid"`
+	FetchedAt    int64  `json:"fetched_at"`
 }
 
 type DeviceStatus struct {
