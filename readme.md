@@ -4,6 +4,8 @@ Control smartlife wifi geyser switch based on the battery percentage of the FoxE
 
 ## FoxESS-Cloud Get Inverter Battery Charge Percentage
 
+./cmd/test_fox/
+
 This is a simple program to get the battery charge percentage from a FoxESS-Cloud inverter using Golang
 
 In order to get access to the data you need and private token to use as API key from the API management section after logging into FoxESS-Cloud
