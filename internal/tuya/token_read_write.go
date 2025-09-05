@@ -7,11 +7,14 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"time"
 )
 
 const tokenFileName = "tuya_token.json"
 
 func SaveToken(tokenResult TokenResult) {
+
+	tokenResult.FetchedAt = time.Now().Unix()
 
 	tokenFilePath, err := getTokenPath()
 	if err != nil {
@@ -88,4 +91,24 @@ func getTokenPath() (string, error) {
 
 	filePath := filepath.Join(credsDir, tokenFileName)
 	return filePath, nil
+}
+
+func ReadValidToken(TuyaClientId, TuyaClientSecret string) (TokenResult, error) {
+	token, err := ReadToken()
+	if err != nil {
+		log.Println("Could not read token file (or it doesn't exist), fetching a new one...")
+		return GetTuyaToken(TuyaClientId, TuyaClientSecret)
+	}
+
+	const expiryBuffer = 600
+	expirationTime := token.FetchedAt + int64(token.ExpireTime)
+	currentTime := time.Now().Unix()
+
+	if currentTime > (expirationTime - expiryBuffer) {
+		log.Println("Token has expired or is about to expire, fetching a new one...")
+		return GetTuyaToken(TuyaClientId, TuyaClientSecret)
+	}
+
+	log.Println("Existing token is valid.")
+	return token, nil
 }
