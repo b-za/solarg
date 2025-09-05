@@ -92,6 +92,69 @@ func GetDeviceStatus(deviceID, clientID, clientSecret string) (DeviceStatusRespo
 	return statusResponse, nil
 }
 
+func GetSwitchStatus(deviceID, clientID, clientSecret string) (SwitchStatusResponse, error) {
+
+	accessToken := getToken(clientID, clientSecret)
+
+	var statusResponse DeviceStatusResponse
+
+	var switchStatusResponse SwitchStatusResponse
+	method := "GET"
+	path := fmt.Sprintf("/v1.0/devices/%s/status", deviceID)
+	url := TuyaBaseURL + path
+
+	req, err := http.NewRequest(method, url, nil)
+	if err != nil {
+		switchStatusResponse.Success = false
+		return switchStatusResponse, fmt.Errorf("failed to create request: %v", err)
+	}
+
+	timestamp := fmt.Sprintf("%d", time.Now().UnixNano()/1e6)
+	stringToSign := method + "\n" + hex.EncodeToString(sha256.New().Sum(nil)) + "\n" + "" + "\n" + path
+	sign := calculateSignatureWithToken(clientID, timestamp, accessToken, stringToSign, clientSecret)
+
+	req.Header.Set("client_id", clientID)
+	req.Header.Set("access_token", accessToken)
+	req.Header.Set("sign", sign)
+	req.Header.Set("t", timestamp)
+	req.Header.Set("sign_method", "HMAC-SHA256")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		switchStatusResponse.Success = false
+		return switchStatusResponse, fmt.Errorf("failed to send request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		switchStatusResponse.Success = false
+		return switchStatusResponse, fmt.Errorf("failed to read response body: %v", err)
+	}
+
+	if err := json.Unmarshal(body, &statusResponse); err != nil {
+		switchStatusResponse.Success = false
+		return switchStatusResponse, fmt.Errorf("failed to unmarshal device status response: %v. Body: %s", err, string(body))
+	}
+
+	if !statusResponse.Success {
+		switchStatusResponse.Success = false
+		return switchStatusResponse, fmt.Errorf("API indicated failure to get status: %s", string(body))
+	}
+
+	switchStatusResponse.Success = true
+
+	switchStatus, ok := statusResponse.Result[0].Value.(bool)
+	if !ok {
+		log.Println("Error: status value is not a boolean")
+	} else {
+		switchStatusResponse.Status = switchStatus
+	}
+
+	return switchStatusResponse, nil
+}
+
 func SetSwitchState(deviceID, clientID, clientSecret string, turnOn bool) (string, error) {
 
 	accessToken := getToken(clientID, clientSecret)
