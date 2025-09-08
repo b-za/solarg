@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/b-za/solarg/internal/fox"
@@ -19,10 +20,10 @@ const TuyaDeviceID = TUYA_DEVICE_ID
 // --- Configuration ---
 // Set the start and end times for the active window in "HH:MM" format.
 const (
-	startTimeStr = "07:00"
-	endTimeStr   = "17:00"
+	startTimeStr = "09:00"
+	endTimeStr   = "15:30"
 	batteryMin   = 60.00
-	BatteryMax   = 80.00
+	batteryMax   = 80.00
 	// Set the location to ensure the time comparison is accurate.
 	// SAST (South Africa Standard Time) corresponds to "Africa/Johannesburg".
 	locationName = "Africa/Johannesburg"
@@ -92,6 +93,9 @@ func checkTime(location *time.Location) {
 
 func activeWindowLoop() {
 
+	batMinStr := strconv.FormatFloat(batteryMin, 'f', 2, 64)
+	batMaxStr := strconv.FormatFloat(batteryMax, 'f', 2, 64)
+
 	var batteryPercentage float64
 	// var residualEnergy float64
 	var geyserOnStatus bool
@@ -105,9 +109,9 @@ func activeWindowLoop() {
 
 	fmt.Println("Battery % is:", batteryPercentage)
 
-	if batteryPercentage > BatteryMax {
+	if batteryPercentage > batteryMax {
 		if geyserOnStatus == false {
-			fmt.Println("Battery % is > 80, and the geyser is off. Turn on the geyser")
+			fmt.Printf("Battery % is > %s, and the geyser is off. Turn on the geyser", batMaxStr)
 			response, err := tuya.SetSwitchState(TuyaDeviceID, TuyaClientId, TuyaClientSecret, false)
 			if err != nil {
 				log.Fatalf("Failed to set switch state: %v", err)
@@ -116,11 +120,11 @@ func activeWindowLoop() {
 			fmt.Println(response)
 
 		} else {
-			fmt.Println("Battery % is > 80, and the geyser is on. Leave the geyser alone.")
+			fmt.Printf("Battery % is > %s, and the geyser is on. Leave the geyser alone.", batMaxStr)
 		}
 	} else if batteryPercentage < batteryMin {
 		if geyserOnStatus == true {
-			fmt.Println("Battery % is < 60, and the geyser is on. Turn off the geyser")
+			fmt.Printf("Battery % is < %s, and the geyser is on. Turn off the geyser", batMinStr)
 			response, err := tuya.SetSwitchState(TuyaDeviceID, TuyaClientId, TuyaClientSecret, false)
 			if err != nil {
 				log.Fatalf("Failed to set switch state: %v", err)
@@ -128,11 +132,14 @@ func activeWindowLoop() {
 			fmt.Println("API Response:")
 			fmt.Println(response)
 		} else {
-			fmt.Println("Battery % is < 60, and the geyser is off. Leave the geyser alone.")
+			fmt.Printf("Battery % is < %s, and the geyser is off. Leave the geyser alone.", batMinStr)
 		}
 
 	} else {
-		fmt.Println("Battery % is between 60 and 80. Leave the geyser alone.")
+		fmt.Printf("Battery % is between %s and %s. Leave the geyser alone.", batMinStr, batMaxStr)
 	}
+
+	// float64 to string
+	// fmt.Println("Battery % is:", strconv.FormatFloat(batteryPercentage, 'f', 2, 64))
 
 }
