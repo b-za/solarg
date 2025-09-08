@@ -2,6 +2,57 @@
 
 Control smartlife wifi geyser switch via Tuya based on the battery percentage of the FoxESS-Cloud inverter.
 
+## Overview
+
+SolarG is a Go-based automation script designed to intelligently control a smart switch (e.g., for a geyser/water heater) by leveraging real-time data from a FoxESS solar battery system. The primary goal is to maximize the use of surplus solar energy for heating water while preserving battery charge for essential loads.
+
+The application runs continuously, checking your solar system's status every five minutes. It operates within a configurable time window (the "active window"), which should be set to coincide with peak solar production hours.
+
+Based on the battery's state of charge (SoC), SolarG makes automated decisions to turn a Tuya-compatible smart switch on or off, ensuring that you heat your water with free energy from the sun without unnecessarily draining your battery.
+
+### How It Works
+
+The core logic follows a simple set of rules:
+
+1.  **Time-Based Operation**: The script checks the system every 5 minutes.
+2.  **Active Window**: It first determines if the current time is within the defined active window (e.g., 09:00 - 15:30).
+3.  **Decision Logic**:
+    - **Inside the Active Window:**
+      - If the battery charge is **above the `batteryMax` threshold** (e.g., 80%) and the geyser is off, it turns the **geyser ON**.
+      - If the battery charge drops **below the `batteryMin` threshold** (e.g., 60%) and the geyser is on, it turns the **geyser OFF**.
+      - If the battery charge is between the min and max thresholds, it takes no action.
+    - **Outside the Active Window:**
+      - The script ensures the **geyser is turned OFF** to conserve power overnight.
+4.  **Notifications**: The application uses Mailtrap to send email alerts whenever it turns the switch on or off, keeping you informed of its activity.
+
+#### Core Logic Summary
+
+| Condition                                         | Geyser Status | Action Taken |
+| ------------------------------------------------- | ------------- | ------------ |
+| **Inside** active window & Battery > `batteryMax` | OFF           | Turn **ON**  |
+| **Inside** active window & Battery < `batteryMin` | ON            | Turn **OFF** |
+| **Outside** active window                         | ON            | Turn **OFF** |
+| _All other states_                                | -             | No Action    |
+
+### Integrations
+
+This application connects to three external services:
+
+- **FoxESS Cloud API**: To retrieve real-time battery status and residual energy data.
+- **Tuya IoT Platform**: To control the state (on/off) of the smart switch.
+- **Mailtrap**: To send transactional email notifications.
+
+### Configuration
+
+All configuration is managed via constants in the `main.go` file. You will need to provide your own API keys, secrets, and device IDs for the services above.
+
+Key configurable parameters include:
+
+- `startTimeStr` / `endTimeStr`: The start and end of the active window.
+- `batteryMin` / `batteryMax`: The float values for the battery charge thresholds.
+- `locationName`: Your timezone (e.g., "Africa/Johannesburg") to ensure correct time comparisons.
+- API keys and device IDs for FoxESS, Tuya, and Mailtrap.
+
 ## Below is some explanations for the two tester apps
 
 There is not a proper written explanation for the main app
