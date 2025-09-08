@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geyser Switched ON</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      font-family: Arial, Helvetica, sans-serif;
+    "
+  >
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td style="padding: 20px 0">
+          <table
+            align="center"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="600"
+            style="
+              max-width: 600px;
+              border-collapse: collapse;
+              background-color: #ffffff;
+              border: 1px solid #dddddd;
+            "
+          >
+            <tr>
+              <td
+                align="center"
+                style="
+                  background-color: #28a745;
+                  color: #ffffff;
+                  padding: 30px 20px;
+                  font-size: 24px;
+                  font-weight: bold;
+                "
+              >
+                ✅ Geyser Switched ON
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                style="
+                  padding: 40px 30px;
+                  color: #333333;
+                  font-size: 16px;
+                  line-height: 1.6;
+                "
+              >
+                <h2 style="margin-top: 0; color: #28a745">
+                  Using Excess Solar Power
+                </h2>
+                <p>Hello,</p>
+                <p>
+                  This is an automated alert to let you know that your geyser
+                  has been switched <strong>ON</strong>.
+                </p>
+                <p>
+                  This was triggered because your battery charge is currently at
+                  <strong>{{ .BatteryPercentage }}%</strong>, which is above
+                  your <strong>{{ .BatteryMax }}%</strong> threshold. The system
+                  is now using this surplus energy to heat your water. ☀️
+                </p>
+                <p style="margin-top: 30px">
+                  Best regards,<br />{{ .SystemName }}
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                style="
+                  background-color: #343a40;
+                  color: #aaaaaa;
+                  padding: 20px 30px;
+                  text-align: center;
+                  font-size: 12px;
+                "
+              >
+                This is an automated message.
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
