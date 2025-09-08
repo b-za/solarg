@@ -54,27 +54,6 @@ var batMaxStr2 = strconv.FormatFloat(batteryMax, 'f', 2, 64)
 
 func main() {
 
-	data := EmailData{
-		BatteryMax: batteryMax,
-		BatteryMin: batteryMin,
-		StartTime:  startTimeStr,
-		EndTime:    endTimeStr,
-		SystemName: "Your Home Automation System",
-	}
-
-	t, err := template.ParseFiles("email.html")
-	if err != nil {
-		log.Printf("Could not parse template file: %v", err)
-	}
-
-	var tpl bytes.Buffer
-	err = t.Execute(&tpl, data)
-	if err != nil {
-		log.Printf("Could not execute template: %v", err)
-	}
-
-	htmlBody := tpl.String()
-
 	// Load the specified time zone to ensure comparisons are correct.
 	location, err := time.LoadLocation(locationName)
 	if err != nil {
@@ -84,7 +63,7 @@ func main() {
 	log.Printf("Application started. Checking time every 5 minutes.")
 	log.Printf("Active window is between %s and %s (%s).", startTimeStr, endTimeStr, locationName)
 
-	sendHtmlEmail("Application started", htmlBody)
+	sendHtmlEmailStart()
 
 	// Create a ticker that fires every 5 minutes.
 	ticker := time.NewTicker(5 * time.Minute)
@@ -135,6 +114,36 @@ func checkTime(location *time.Location) {
 		activeWindowLoop()
 	} else {
 		log.Printf("[%s] The current time is NOT within the active window.", now.Format("15:04:05"))
+		inactiveWindowLoop()
+	}
+}
+
+func inactiveWindowLoop() {
+
+	geyserStatusResponse, err := tuya.GetSwitchStatus(TuyaDeviceID, TuyaClientId, TuyaClientSecret)
+	if err != nil {
+		log.Printf("Failed to get switch state: %v", err)
+	}
+	if geyserStatusResponse.Success {
+		if geyserStatusResponse.Status == true {
+
+			response, err := tuya.SetSwitchState(TuyaDeviceID, TuyaClientId, TuyaClientSecret, false)
+			if err != nil {
+				log.Printf("Failed to set switch state: %v", err)
+			}
+			fmt.Println("API Response:")
+			fmt.Println(response)
+
+		}
+	} else {
+
+		response, err := tuya.SetSwitchState(TuyaDeviceID, TuyaClientId, TuyaClientSecret, false)
+		if err != nil {
+			log.Printf("Failed to set switch state: %v", err)
+		}
+		fmt.Println("API Response:")
+		fmt.Println(response)
+
 	}
 }
 
@@ -203,7 +212,37 @@ func activeWindowLoop() {
 }
 
 // sendHtmlEmail prepares and sends an email with HTML content.
+func sendHtmlEmailStart() {
+
+	subject := "Application Started"
+
+	data := EmailData{
+		BatteryMax: batteryMax,
+		BatteryMin: batteryMin,
+		StartTime:  startTimeStr,
+		EndTime:    endTimeStr,
+		SystemName: "Your Home Automation System",
+	}
+
+	t, err := template.ParseFiles("email-start.html")
+	if err != nil {
+		log.Printf("Could not parse template file: %v", err)
+	}
+
+	var tpl bytes.Buffer
+	err = t.Execute(&tpl, data)
+	if err != nil {
+		log.Printf("Could not execute template: %v", err)
+	}
+
+	htmlBody := tpl.String()
+
+	sendHtmlEmail(subject, htmlBody)
+
+}
+
 func sendHtmlEmail(subject, htmlBody string) {
+
 	emailPayload := map[string]interface{}{
 		"from":    map[string]string{"email": mailtrapFromEmail, "name": "SolarG"},
 		"to":      []map[string]string{{"email": mailtrapToEmail}},
@@ -211,6 +250,7 @@ func sendHtmlEmail(subject, htmlBody string) {
 		"html":    htmlBody,
 	}
 	sendMailtrapRequest(emailPayload)
+
 }
 
 // sendPlainTextEmail prepares and sends an email with plain text content.
