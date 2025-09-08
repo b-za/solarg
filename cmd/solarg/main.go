@@ -40,10 +40,10 @@ func main() {
 	log.Printf("Active window is between %s and %s (%s).", startTimeStr, endTimeStr, locationName)
 
 	// Create a ticker that fires every 5 minutes.
-	//ticker := time.NewTicker(5 * time.Minute)
+	ticker := time.NewTicker(5 * time.Minute)
 
 	// Ticker every 5 seconds
-	ticker := time.NewTicker(30 * time.Second)
+	// ticker := time.NewTicker(30 * time.Second)
 
 	// Ensure the ticker is stopped when the function exits to clean up resources.
 	defer ticker.Stop()
