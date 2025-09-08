@@ -2,7 +2,11 @@
 
 Control smartlife wifi geyser switch via Tuya based on the battery percentage of the FoxESS-Cloud inverter.
 
-## FoxESS-Cloud Get Inverter Battery Charge Percentage
+## Below is some explanations for the two tester apps
+
+There is not a proper written explanation for the main app
+
+### FoxESS-Cloud Get Inverter Battery Charge Percentage
 
 ./cmd/test_fox/
 
@@ -28,7 +32,7 @@ To run the program, run the following command
 go run .
 ```
 
-## Tuya Smartlife Wifi Geyser Switch Control via Tuya
+### Tuya Smartlife Wifi Geyser Switch Control via Tuya
 
 ./cmd/test_tuya/
 
