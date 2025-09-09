@@ -55,7 +55,11 @@ Key configurable parameters include:
 
 ## Some notes on running the app on a linus server
 
-Restart the service
+export the go path
+
+```bash
+export PATH=$PATH:/usr/local/go/bin
+```
 
 Setup the systemd service
 
