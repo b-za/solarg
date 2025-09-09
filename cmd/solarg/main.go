@@ -53,8 +53,6 @@ func main() {
 	log.Printf("Active window is between %s and %s (%s).", startTimeStr, endTimeStr, locationName)
 
 	sendHtmlEmailStart()
-	sendGeyserOnEmail(batteryMax)
-	sendGeyserOffEmail(batteryMin)
 
 	// Create a ticker that fires every 5 minutes.
 	ticker := time.NewTicker(5 * time.Minute)
