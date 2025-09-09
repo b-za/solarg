@@ -53,6 +53,53 @@ Key configurable parameters include:
 - `locationName`: Your timezone (e.g., "Africa/Johannesburg") to ensure correct time comparisons.
 - API keys and device IDs for FoxESS, Tuya, and Mailtrap.
 
+## Some notes on running the app on a linus server
+
+Restart the service
+
+Setup the systemd service
+
+```bash
+sudo vi /lib/systemd/system/solarg.service
+```
+
+The config for the service
+
+```yml
+[Unit]
+Description=solarg
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+ExecStart=/home/rootpi/apps/solarg/cmd/solarg/solarg
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Start the service
+
+```bash
+sudo service solarg start
+```
+
+Check the status of the service
+
+```bash
+sudo service notes status
+sudo service notes statusy
+
+```
+
+Restart the service
+
+```bash
+sudo systemctl daemon-reexec
+
+```
+
 ## Below is some explanations for the two tester apps
 
 There is not a proper written explanation for the main app
