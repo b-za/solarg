@@ -2,8 +2,20 @@ package main
 
 import (
 	"log"
+	"path/filepath"
+	"runtime"
 	"time"
 )
+
+// getBasePath returns the absolute path to the project's root directory.
+func getBasePath() string {
+	// Get the path of the file that calls this function.
+	_, b, _, _ := runtime.Caller(0)
+
+	// The project root is the directory of the caller's file.
+	// You might need to adjust this if your go files are in a subdirectory e.g. filepath.Dir(b) + "/.."
+	return filepath.Dir(b)
+}
 
 // checkTime gets the current time and determines if it is within the active window.
 func checkTime(location *time.Location) {
