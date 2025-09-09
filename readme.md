@@ -88,8 +88,8 @@ sudo service solarg start
 Check the status of the service
 
 ```bash
-sudo service notes status
-sudo service notes statusy
+sudo service solarg status
+sudo service solarg statusy
 
 ```
 
