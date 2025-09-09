@@ -28,12 +28,12 @@ func getToken(ClientID, ClientSecret string) string {
 		log.Println("Could not read existing token, retrieving a new one...")
 		_, err := GetTuyaToken(ClientID, ClientSecret)
 		if err != nil {
-			log.Fatalf("Failed to retrieve a new token: %v", err)
+			log.Printf("Failed to retrieve a new token: %v", err)
 		}
 		// Try reading the newly saved token again.
 		token, err = ReadToken()
 		if err != nil {
-			log.Fatalf("Failed to read newly saved token: %v", err)
+			log.Printf("Failed to read newly saved token: %v", err)
 		}
 	}
 
@@ -41,7 +41,7 @@ func getToken(ClientID, ClientSecret string) string {
 	fmt.Println(token.ExpireTime)
 
 	if token.AccessToken == "" {
-		log.Fatal("Token is invalid or empty.")
+		log.Printf("Token is invalid or empty.")
 	}
 	return token.AccessToken
 }
