@@ -46,7 +46,7 @@ func main() {
 	// Load the specified time zone to ensure comparisons are correct.
 	location, err := time.LoadLocation(locationName)
 	if err != nil {
-		log.Fatalf("Fatal: Could not load location %s: %v", locationName, err)
+		log.Printf("Could not load location %s: %v", locationName, err)
 	}
 
 	log.Printf("Application started. Checking time every 5 minutes.")
