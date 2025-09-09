@@ -52,7 +52,7 @@ func main() {
 	log.Printf("Application started. Checking time every 5 minutes.")
 	log.Printf("Active window is between %s and %s (%s).", startTimeStr, endTimeStr, locationName)
 
-	// sendHtmlEmailStart()
+	//sendHtmlEmailStart()
 
 	// Create a ticker that fires every 5 minutes.
 	ticker := time.NewTicker(5 * time.Minute)
