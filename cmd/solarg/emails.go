@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"path/filepath"
 	"time"
 
 	"bytes"
@@ -152,14 +153,17 @@ func sendMailtrapRequest(payload map[string]interface{}) {
 }
 
 func generateEmailBody(templateFile string, data interface{}) (string, error) {
-	t, err := template.ParseFiles(templateFile)
+
+	absPath := filepath.Join(getBasePath(), templateFile)
+
+	t, err := template.ParseFiles(absPath)
 	if err != nil {
-		return "", fmt.Errorf("could not parse template file %s: %w", templateFile, err)
+		return "", fmt.Errorf("could not parse template file %s: %w", absPath, err)
 	}
 
 	var tpl bytes.Buffer
 	if err := t.Execute(&tpl, data); err != nil {
-		return "", fmt.Errorf("could not execute template %s: %w", templateFile, err)
+		return "", fmt.Errorf("could not execute template %s: %w", absPath, err)
 	}
 
 	return tpl.String(), nil
