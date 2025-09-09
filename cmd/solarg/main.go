@@ -52,7 +52,7 @@ func main() {
 	log.Printf("Application started. Checking time every 5 minutes.")
 	log.Printf("Active window is between %s and %s (%s).", startTimeStr, endTimeStr, locationName)
 
-	sendHtmlEmailStart()
+	// sendHtmlEmailStart()
 
 	// Create a ticker that fires every 5 minutes.
 	ticker := time.NewTicker(5 * time.Minute)
@@ -131,7 +131,6 @@ func activeWindowLoop() {
 	if batteryPercentage > batteryMax {
 		if geyserOnStatus == false {
 			fmt.Printf("Battery is > %s, and the geyser is off. Turn on the geyser", batMaxStr)
-			sendPlainTextEmail("Switch Geyser On", "Battery % is > "+batMaxStr+", and the geyser is off. Turn on the geyser")
 			sendGeyserOnEmail(batteryPercentage)
 			response, err := tuya.SetSwitchState(TuyaDeviceID, TuyaClientId, TuyaClientSecret, true)
 			if err != nil {
@@ -146,7 +145,6 @@ func activeWindowLoop() {
 	} else if batteryPercentage < batteryMin {
 		if geyserOnStatus == true {
 			fmt.Printf("Battery is < %s, and the geyser is on. Turn off the geyser", batMinStr)
-			sendPlainTextEmail("Switch Geyser Off", "Battery % is < "+batMinStr+", and the geyser is on. Turn off the geyser")
 			sendGeyserOffEmail(batteryPercentage)
 			response, err := tuya.SetSwitchState(TuyaDeviceID, TuyaClientId, TuyaClientSecret, false)
 			if err != nil {
