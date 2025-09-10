@@ -25,12 +25,12 @@ func checkTime(location *time.Location) {
 	// Parse the start and end time strings.
 	// The date part is ignored, only the time of day is used.
 	layout := "15:04" // "HH:MM" format
-	startTime, err := time.Parse(layout, startTimeStr)
+	startTime, err := time.Parse(layout, win1Start)
 	if err != nil {
 		log.Printf("Error: Could not parse start time: %v", err)
 		return
 	}
-	endTime, err := time.Parse(layout, endTimeStr)
+	endTime, err := time.Parse(layout, win1End)
 	if err != nil {
 		log.Printf("Error: Could not parse end time: %v", err)
 		return
@@ -39,11 +39,11 @@ func checkTime(location *time.Location) {
 	// Construct the full start and end time for the *current* day.
 	// This ensures the comparison is always against today's window.
 	year, month, day := now.Date()
-	activeStartTime := time.Date(year, month, day, startTime.Hour(), startTime.Minute(), 0, 0, location)
-	activeEndTime := time.Date(year, month, day, endTime.Hour(), endTime.Minute(), 0, 0, location)
+	win1ActiveStartTime := time.Date(year, month, day, startTime.Hour(), startTime.Minute(), 0, 0, location)
+	win1ActiveEndTime := time.Date(year, month, day, endTime.Hour(), endTime.Minute(), 0, 0, location)
 
 	// Check if the current time is after the start and before the end.
-	if now.After(activeStartTime) && now.Before(activeEndTime) {
+	if now.After(win1ActiveStartTime) && now.Before(win1ActiveEndTime) {
 		log.Printf("[%s] The current time is WITHIN the active window.", now.Format("15:04:05"))
 		activeWindowLoop()
 	} else {
