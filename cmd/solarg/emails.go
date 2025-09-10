@@ -36,8 +36,8 @@ func sendHtmlEmailStart() {
 	data := EmailData{
 		BatteryMax: batteryMax,
 		BatteryMin: batteryMin,
-		StartTime:  startTimeStr,
-		EndTime:    endTimeStr,
+		StartTime:  win1Start,
+		EndTime:    win1End,
 		SystemName: systemName,
 	}
 
