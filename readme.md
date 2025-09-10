@@ -55,6 +55,8 @@ Key configurable parameters include:
 
 ## Some notes on running the app on a linus server
 
+https://gist.github.com/b-za/75035ae7168eb40fc721038c6e9e76d9
+
 export the go path
 
 ```bash
