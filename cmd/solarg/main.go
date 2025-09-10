@@ -23,17 +23,23 @@ const mailtrapAPIToken = MAILTRAP_API_TOKEN
 
 var mailtrapToEmails = MAILTRAP_TO_EMAILS
 
+const systemName = "SolarG"
+const locationName = "Africa/Johannesburg"
+
 // --- Configuration ---
 // Set the start and end times for the active window in "HH:MM" format.
 const (
-	startTimeStr = "09:00"
-	endTimeStr   = "15:30"
-	batteryMin   = 60.00
-	batteryMax   = 80.00
-	systemName   = "SolarG"
-	// Set the location to ensure the time comparison is accurate.
-	// SAST (South Africa Standard Time) corresponds to "Africa/Johannesburg".
-	locationName = "Africa/Johannesburg"
+	win1Start  = "09:00"
+	win1End    = "15:30"
+	batteryMin = 60.00
+	batteryMax = 80.00
+)
+
+const (
+	win2Start      = "15:30"
+	win2End        = "17:30"
+	win2BatteryMin = 95.00
+	win2BatteryMax = 88.00
 )
 
 var batMinStr = strconv.FormatFloat(batteryMin, 'f', 2, 64)
@@ -50,7 +56,7 @@ func main() {
 	}
 
 	log.Printf("Application started. Checking time every 5 minutes.")
-	log.Printf("Active window is between %s and %s (%s).", startTimeStr, endTimeStr, locationName)
+	log.Printf("Active window is between %s and %s (%s).", win1Start, win1End, locationName)
 
 	//sendHtmlEmailStart()
 
