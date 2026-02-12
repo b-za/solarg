@@ -53,7 +53,7 @@ Key configurable parameters include:
 - `locationName`: Your timezone (e.g., "Africa/Johannesburg") to ensure correct time comparisons.
 - API keys and device IDs for FoxESS, Tuya, and Mailtrap.
 
-## Some notes on running the app on a linus server
+## Some notes on running the app on a linux server
 
 https://gist.github.com/b-za/75035ae7168eb40fc721038c6e9e76d9
 
@@ -95,7 +95,16 @@ Check the status of the service
 
 ```bash
 sudo service solarg status
-sudo service solarg statusy
+sudo systemctl status solarg
+
+
+```
+
+To make the service start automatically every time you boot:
+
+````bash
+
+sudo systemctl enable solarg
 
 ```
 
@@ -104,7 +113,7 @@ Restart the service
 ```bash
 sudo systemctl daemon-reexec
 
-```
+````
 
 ## Below is some explanations for the two tester apps
 
